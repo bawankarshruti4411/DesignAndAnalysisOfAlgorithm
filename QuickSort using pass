@@ -1,12 +1,21 @@
 #include <stdio.h>
+
+int pass = 1;
+void printArray(int arr[], int size) {
+    for (int i = 0; i < size; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
+}
+
 void swap(int* a, int* b) {
     int temp = *a;
     *a = *b;
     *b = temp;
 }
-int partition(int arr[], int low, int high) {
+
+int partition(int arr[], int low, int high, int size) {
     int pivot = arr[high];
-    int i = (low - 1);
+    int i = (low - 1); 
 
     for (int j = low; j <= high - 1; j++) {
         if (arr[j] < pivot) {
@@ -14,20 +23,20 @@ int partition(int arr[], int low, int high) {
             swap(&arr[i], &arr[j]);
         }
     }
+
     swap(&arr[i + 1], &arr[high]);
+    printf("Pass %d: ", pass++);
+    printArray(arr, size);
+
     return (i + 1);
 }
-void quickSort(int arr[], int low, int high) {
+void quickSort(int arr[], int low, int high, int size) {
     if (low < high) {
-        int pi = partition(arr, low, high);
-        quickSort(arr, low, pi - 1);
-        quickSort(arr, pi + 1, high);
+        int pi = partition(arr, low, high, size);
+
+        quickSort(arr, low, pi - 1, size);
+        quickSort(arr, pi + 1, high, size);
     }
-}
-void printArray(int arr[], int size) {
-    for (int i = 0; i < size; i++)
-        printf("%d ", arr[i]);
-    printf("\n");
 }
 int main() {
     int arr[] = {10, 7, 8, 9, 1, 5};
@@ -36,9 +45,10 @@ int main() {
     printf("Original array:\n");
     printArray(arr, n);
 
-    quickSort(arr, 0, n - 1);
+    quickSort(arr, 0, n - 1, n);
 
     printf("Sorted array:\n");
     printArray(arr, n);
+
     return 0;
 }
